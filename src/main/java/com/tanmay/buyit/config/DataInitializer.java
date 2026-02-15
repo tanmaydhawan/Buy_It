@@ -6,6 +6,7 @@ import com.tanmay.buyit.repo.RoleRepository;
 import com.tanmay.buyit.repo.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
@@ -14,10 +15,12 @@ public class DataInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(RoleRepository roleRepository, UserRepository userRepository){
+    public DataInitializer(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private static final String ADMIN = "BUYIT_ADMIN";
@@ -42,7 +45,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .firstName(ADMIN_FIRST_NAME)
                                 .lastName(ADMIN_LAST_NAME)
                                 .email(ADMIN_EMAIL)
-                                .password(ADMIN_PASSWORD)
+                                .password(passwordEncoder.encode(ADMIN_PASSWORD))
                                 .userRoles(Set.of(admin, customer))
                                 .build()
                 ));
