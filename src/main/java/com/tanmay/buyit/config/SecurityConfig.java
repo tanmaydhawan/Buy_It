@@ -34,14 +34,13 @@ public class SecurityConfig{
         return configuration.getAuthenticationManager();
     }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider =
-//                new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(customUserDetailsService);
-//        provider.setPasswordEncoder(passwordEncoder());
-//        return provider;
-//    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
@@ -50,6 +49,7 @@ public class SecurityConfig{
                         auth.requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .userDetailsService(customUserDetailsService)
+                .authenticationProvider(authenticationProvider())
                 .build();
     }
 }
