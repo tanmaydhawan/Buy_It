@@ -35,21 +35,12 @@ public class SecurityConfig{
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(customUserDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .userDetailsService(customUserDetailsService)
-                .authenticationProvider(authenticationProvider())
                 .build();
     }
 }
