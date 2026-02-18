@@ -3,7 +3,6 @@ package com.tanmay.buyit.service;
 import com.tanmay.buyit.entity.Roles;
 import com.tanmay.buyit.entity.User;
 import com.tanmay.buyit.repo.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

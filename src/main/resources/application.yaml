@@ -2,7 +2,7 @@ spring:
   application:
     name: buyit
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce
+    url: jdbc:postgresql://localhost:5432/ecommerce?TimeZone=Asia/Kolkata
     username: admin
     password: admin
   jpa:

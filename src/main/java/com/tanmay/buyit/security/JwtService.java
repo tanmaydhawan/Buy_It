@@ -14,7 +14,9 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "bXktc3VwZXItc2VjcmV0LWtleS1mb3Itand0LTEyMw==";
+    private static final String SECRET_KEY =
+            "dGhpc19pc19hX3Zlcnlfc2VjdXJlXzMyX2NoYXJhY3Rlcl9rZXk=";
+
     private static final long EXPIRATION = 1000 * 60 * 60;  // 1 Hour
 
     private Key getSignInKey(){
