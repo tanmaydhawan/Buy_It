@@ -2,6 +2,7 @@ package com.tanmay.buyit.controller;
 
 
 import com.tanmay.buyit.dto.LoginRequest;
+import com.tanmay.buyit.dto.LoginResponse;
 import com.tanmay.buyit.security.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login (@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login (@RequestBody LoginRequest request){
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -35,6 +36,6 @@ public class AuthController {
 
         String jwtToken = jwtService.createJwtToken((UserDetails) authenticate.getPrincipal());
 
-        return ResponseEntity.ok(jwtToken);
+        return ResponseEntity.ok(new LoginResponse(jwtToken));
     }
 }
