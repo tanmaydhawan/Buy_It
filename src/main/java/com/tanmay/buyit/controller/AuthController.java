@@ -31,19 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login (@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login (@RequestBody LoginRequest request){
 
-        try{
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
             String jwtToken = jwtService.createJwtToken((UserDetails) authenticate.getPrincipal());
-            return ResponseEntity.ok(jwtToken);
-        }
-        catch (Exception e){   //Temperary Impl, To be fixed using real DTOs
-            log.debug("Username/Password might be Incorrect!");
-            return new ResponseEntity<>("Incorrect Username / Password", HttpStatus.BAD_REQUEST);
-        }
+            return ResponseEntity.ok(new LoginResponse(jwtToken));
     }
 }
