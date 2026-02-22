@@ -3,7 +3,10 @@ package com.tanmay.buyit.controller;
 
 import com.tanmay.buyit.dto.LoginRequest;
 import com.tanmay.buyit.dto.LoginResponse;
+import com.tanmay.buyit.dto.RegisterUserRequest;
+import com.tanmay.buyit.dto.RegisterUserResponse;
 import com.tanmay.buyit.security.JwtService;
+import com.tanmay.buyit.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,10 +27,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserServiceImpl userService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService){
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserServiceImpl userService){
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -39,5 +44,12 @@ public class AuthController {
                         request.getPassword()));
             String jwtToken = jwtService.createJwtToken((UserDetails) authenticate.getPrincipal());
             return ResponseEntity.ok(new LoginResponse(jwtToken));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<RegisterUserResponse> signUp (@RequestBody RegisterUserRequest registerUserRequest){
+        RegisterUserResponse registerUserResponse = userService.userSignup(registerUserRequest);
+
+        return new ResponseEntity<>(registerUserResponse, HttpStatus.CREATED);
     }
 }
