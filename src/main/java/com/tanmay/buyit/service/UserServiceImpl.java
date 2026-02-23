@@ -6,6 +6,7 @@ import com.tanmay.buyit.entity.Roles;
 import com.tanmay.buyit.entity.User;
 import com.tanmay.buyit.repo.RoleRepository;
 import com.tanmay.buyit.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,24 +22,32 @@ public class UserServiceImpl {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
+    @Transactional
     public RegisterUserResponse userSignup (RegisterUserRequest request){
-        if(userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new RuntimeException("User with this email already exists!");
-        }
 
-        //Default Role
-        Roles customerRole = roleRepository.findByName("BUYIT_CUSTOMER")
-                .orElseThrow(() -> new RuntimeException("Default role not found"));
+        checkUserDoesNotExists(request.getEmail());
 
-        User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setUserRoles(Set.of(customerRole));
+        User user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .userRoles(Set.of(setDefaultRole()))
+                .build();
 
         User savedUser = userRepository.save(user);
 
         return new RegisterUserResponse(savedUser.getId(), savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail(), LocalDateTime.now());
+    }
+
+    private void  checkUserDoesNotExists(String email){
+        if(userRepository.existsByEmail(email)){
+            throw new RuntimeException("User with this email already exists!");
+        }
+    }
+
+    private Roles setDefaultRole(){
+        return roleRepository.findByName("BUYIT_CUSTOMER")
+                .orElseThrow(() -> new RuntimeException("Default role not found"));
     }
 }

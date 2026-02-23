@@ -31,6 +31,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .toArray(String[]::new)
                 )
                 .build();
-
     }
 }

@@ -7,6 +7,7 @@ import com.tanmay.buyit.dto.RegisterUserRequest;
 import com.tanmay.buyit.dto.RegisterUserResponse;
 import com.tanmay.buyit.security.JwtService;
 import com.tanmay.buyit.service.UserServiceImpl;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -47,9 +48,10 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<RegisterUserResponse> signUp (@RequestBody RegisterUserRequest registerUserRequest){
+    public ResponseEntity<RegisterUserResponse> signUp (@Valid @RequestBody RegisterUserRequest registerUserRequest){
         RegisterUserResponse registerUserResponse = userService.userSignup(registerUserRequest);
 
-        return new ResponseEntity<>(registerUserResponse, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(registerUserResponse);
     }
 }
