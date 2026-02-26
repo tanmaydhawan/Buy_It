@@ -1,4 +1,4 @@
-package com.tanmay.buyit.config.exception;
+package com.tanmay.buyit.exception;
 
 
 import com.tanmay.buyit.dto.ErrorResponse;
@@ -44,7 +44,35 @@ public class GlobalExceptionHandler {
                 .error("Runtime Error!")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(LocalDateTime.now())
-                .path(request.getContextPath())
+                .path(request.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex, HttpServletRequest request){
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Duplicate User Exception!")
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .path(request.getRequestURI())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleDefaultRoleNotFoundException(UserAlreadyExistsException ex, HttpServletRequest request){
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Duplicate User Exception!")
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .path(request.getRequestURI())
+                .timestamp(LocalDateTime.now())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -58,7 +86,7 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(LocalDateTime.now())
-                .path(request.getContextPath())
+                .path(request.getRequestURI())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

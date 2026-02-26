@@ -4,6 +4,8 @@ import com.tanmay.buyit.dto.RegisterUserRequest;
 import com.tanmay.buyit.dto.RegisterUserResponse;
 import com.tanmay.buyit.entity.Roles;
 import com.tanmay.buyit.entity.User;
+import com.tanmay.buyit.exception.RoleNotFoundException;
+import com.tanmay.buyit.exception.UserAlreadyExistsException;
 import com.tanmay.buyit.repo.RoleRepository;
 import com.tanmay.buyit.repo.UserRepository;
 import jakarta.transaction.Transactional;
@@ -21,6 +23,8 @@ public class UserServiceImpl {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+
+    private static final String CUSTOMER_ROLE = "BUYIT_CUSTOMER";
 
     @Transactional
     public RegisterUserResponse userSignup (RegisterUserRequest request){
@@ -42,12 +46,12 @@ public class UserServiceImpl {
 
     private void  checkUserDoesNotExists(String email){
         if(userRepository.existsByEmail(email)){
-            throw new RuntimeException("User with this email already exists!");
+            throw new UserAlreadyExistsException(email);
         }
     }
 
     private Roles setDefaultRole(){
-        return roleRepository.findByName("BUYIT_CUSTOMER")
-                .orElseThrow(() -> new RuntimeException("Default role not found"));
+        return roleRepository.findByName(CUSTOMER_ROLE)
+                .orElseThrow(() -> new RoleNotFoundException(CUSTOMER_ROLE));
     }
 }
