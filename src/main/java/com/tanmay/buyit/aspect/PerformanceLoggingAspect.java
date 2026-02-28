@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PerformanceLoggingAspect {
 
-    @Pointcut("execution (* com.tanmay.buyit.controller..*(..))")
-    public void controllerLayer(){};
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+    public void controllerLayer(){}
 
     @Around("controllerLayer()")
     public Object calculateExecutionTime (ProceedingJoinPoint joinPoint) throws Throwable {
