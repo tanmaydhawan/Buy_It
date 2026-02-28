@@ -1,6 +1,5 @@
 package com.tanmay.buyit.aspect;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,14 +20,27 @@ public class PerformanceLoggingAspect {
 
         long start = System.currentTimeMillis();
 
-        Object result = joinPoint.proceed();
+        try{
 
-        long executionTime = System.currentTimeMillis()-start;
+            Object result = joinPoint.proceed();
 
-        log.info("Method : {} | Execution Time : {} ms",
-                joinPoint.getSignature(),
-                executionTime);
+            long executionTime = System.currentTimeMillis()-start;
 
-        return result;
+            log.info("SUCCESS -> Method : {} | Execution Time : {} ms",
+                    joinPoint.getSignature(),
+                    executionTime);
+
+            return result;
+
+        } catch (Exception ex) {
+
+            long executionTime = System.currentTimeMillis()-start;
+
+            log.info("FAILURE -> Method : {} | Execution Time : {} ms | Error : {}",
+                    joinPoint.getSignature(),
+                    executionTime,
+                    ex.getMessage());
+            throw ex;
+        }
     }
 }
