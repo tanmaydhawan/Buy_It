@@ -1,6 +1,7 @@
 package com.tanmay.buyit.controller;
 
 
+import com.tanmay.buyit.aspect.LogExecution;
 import com.tanmay.buyit.dto.LoginRequest;
 import com.tanmay.buyit.dto.LoginResponse;
 import com.tanmay.buyit.dto.RegisterUserRequest;
@@ -37,6 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @LogExecution
     public ResponseEntity<LoginResponse> login (@RequestBody LoginRequest request){
 
         Authentication authenticate = authenticationManager.authenticate(
@@ -48,6 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @LogExecution
     public ResponseEntity<RegisterUserResponse> signUp (@Valid @RequestBody RegisterUserRequest registerUserRequest){
         RegisterUserResponse registerUserResponse = userService.userSignup(registerUserRequest);
 
