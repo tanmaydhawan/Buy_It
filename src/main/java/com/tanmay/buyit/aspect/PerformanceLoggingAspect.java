@@ -6,16 +6,17 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import com.tanmay.buyit.aspect.LogExecution;
 
 @Aspect
 @Component
 @Slf4j
 public class PerformanceLoggingAspect {
 
-//    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-//    public void controllerLayer(){}
+    @Pointcut("@annotation(LogExecution)")
+    public void logExecutionAnnotation(){}
 
-    @Around("@annotation(com.tanmay.buyit.aspect.LogExecution)")
+    @Around("logExecutionAnnotation()")
     public Object calculateExecutionTime (ProceedingJoinPoint joinPoint) throws Throwable {
 
         long start = System.currentTimeMillis();
