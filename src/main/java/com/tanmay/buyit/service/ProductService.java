@@ -1,6 +1,7 @@
 package com.tanmay.buyit.service;
 
-import com.tanmay.buyit.entity.Product;
+import com.tanmay.buyit.dto.ProductRequest;
+import com.tanmay.buyit.dto.ProductResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 @Service
 public interface ProductService {
 
-    Product createProduct(Product product, Long categoryId);
-    List<Product> getAllProducts();
+    ProductResponse createProduct(ProductRequest productRequest);
+    List<ProductResponse> getAllProducts();
 
 }

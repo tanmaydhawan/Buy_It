@@ -1,5 +1,8 @@
 package com.tanmay.buyit.service;
 
+import com.tanmay.buyit.dto.CategoryResponse;
+import com.tanmay.buyit.dto.ProductRequest;
+import com.tanmay.buyit.dto.ProductResponse;
 import com.tanmay.buyit.entity.Category;
 import com.tanmay.buyit.entity.Product;
 import com.tanmay.buyit.exception.CategoryNotFoundException;
@@ -18,18 +21,49 @@ public class ProductServiceImpl implements ProductService{
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Product createProduct(Product product, Long categoryId) {
+    public ProductResponse createProduct(ProductRequest productRequest) {
 
-        Category category = categoryRepository.findById(categoryId)
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
                                     .orElseThrow(CategoryNotFoundException::new);
 
+        Product product = mapToEntity(productRequest);
         product.setCategory(category);
 
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        return mapToDto(savedProduct);
+    }
+
+    private ProductResponse mapToDto(Product product) {
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .stock(product.getStock())
+                .category(
+                        CategoryResponse.builder()
+                                .id(product.getCategory().getId())
+                                .name(product.getCategory().getName())
+                                .build()
+                )
+                .build();
+    }
+
+    private Product mapToEntity(ProductRequest productRequest) {
+        return Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .price(productRequest.getPrice())
+                .stock(productRequest.getStock())
+                .build();
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
     }
 }

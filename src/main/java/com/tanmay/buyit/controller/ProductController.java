@@ -1,6 +1,7 @@
 package com.tanmay.buyit.controller;
 
-import com.tanmay.buyit.entity.Product;
+import com.tanmay.buyit.dto.ProductRequest;
+import com.tanmay.buyit.dto.ProductResponse;
 import com.tanmay.buyit.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,15 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/")
+    @GetMapping
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
-    public ResponseEntity<List<Product>> fetchAllProducts(){
+    public ResponseEntity<List<ProductResponse>> fetchAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
-    public ResponseEntity<Product> createProducts(@RequestBody Product product, @RequestParam Long categoryId){
-        return new ResponseEntity<>(productService.createProduct(product, categoryId), HttpStatus.OK);
+    public ResponseEntity<ProductResponse> createProducts(@RequestBody ProductRequest productRequest){
+        return new ResponseEntity<>(productService.createProduct(productRequest), HttpStatus.OK);
     }
 }
