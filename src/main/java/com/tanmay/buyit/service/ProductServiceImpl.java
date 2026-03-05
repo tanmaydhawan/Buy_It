@@ -6,6 +6,7 @@ import com.tanmay.buyit.dto.ProductResponse;
 import com.tanmay.buyit.entity.Category;
 import com.tanmay.buyit.entity.Product;
 import com.tanmay.buyit.exception.CategoryNotFoundException;
+import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import com.tanmay.buyit.repo.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -65,5 +66,11 @@ public class ProductServiceImpl implements ProductService{
                 .stream()
                 .map(this::mapToDto)
                 .toList();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        productRepository.delete(product);
     }
 }
