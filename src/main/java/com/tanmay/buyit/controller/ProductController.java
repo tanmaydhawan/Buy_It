@@ -30,6 +30,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.createProduct(productRequest), HttpStatus.OK);
     }
 
+    @PutMapping
+    @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
+    public ResponseEntity<ProductResponse> editExistingProduct (@PathVariable Long id, @RequestBody ProductRequest productRequest){
+        return new ResponseEntity<>(productService.editProduct(id, productRequest), HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
