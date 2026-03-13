@@ -35,6 +35,36 @@ public class ProductServiceImpl implements ProductService{
         return mapToDto(savedProduct);
     }
 
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        productRepository.delete(product);
+    }
+
+    @Override
+    public ProductResponse editProduct(Long id, ProductRequest productRequest) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        Category category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+
+        product.setName(productRequest.getName());
+        product.setStock(productRequest.getStock());
+        product.setPrice(productRequest.getPrice());
+        product.setDescription(productRequest.getDescription());
+        product.setCategory(category);
+
+        Product updatedProduct = productRepository.save(product);
+
+        return mapToDto(updatedProduct);
+    }
+
     private ProductResponse mapToDto(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
@@ -58,19 +88,5 @@ public class ProductServiceImpl implements ProductService{
                 .price(productRequest.getPrice())
                 .stock(productRequest.getStock())
                 .build();
-    }
-
-    @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .toList();
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        productRepository.delete(product);
     }
 }
