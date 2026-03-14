@@ -42,4 +42,10 @@ public class ProductController {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
+    public ResponseEntity<List<ProductResponse>> searchProductsByName (@RequestParam String name){
+        return new ResponseEntity<>(productService.findProductsByName(name), HttpStatus.OK);
+    }
 }

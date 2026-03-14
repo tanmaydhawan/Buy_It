@@ -13,4 +13,6 @@ public interface ProductService {
     List<ProductResponse> getAllProducts();
     void deleteById(Long id);
     ProductResponse editProduct(Long id, ProductRequest productRequest);
+
+    List<ProductResponse> findProductsByName(String name);
 }

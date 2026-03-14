@@ -65,6 +65,13 @@ public class ProductServiceImpl implements ProductService{
         return mapToDto(updatedProduct);
     }
 
+    @Override
+    public List<ProductResponse> findProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name).stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
     private ProductResponse mapToDto(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
