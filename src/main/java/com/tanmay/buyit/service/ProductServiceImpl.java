@@ -96,4 +96,12 @@ public class ProductServiceImpl implements ProductService{
                 .stock(productRequest.getStock())
                 .build();
     }
+
+    @Override
+    public List<ProductResponse> getProductByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
 }
