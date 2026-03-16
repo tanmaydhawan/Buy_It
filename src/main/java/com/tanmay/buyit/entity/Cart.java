@@ -19,7 +19,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long Id;
 
     @OneToOne
     private User user;
