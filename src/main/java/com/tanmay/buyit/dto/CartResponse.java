@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class CartResponse {
     private List<CartItemResponse> cartItemResponseList;
-    private BigDecimal total;
+    private BigDecimal totalAmount;
 }
