@@ -2,6 +2,7 @@ package com.tanmay.buyit.controller;
 
 import com.tanmay.buyit.dto.CartRequest;
 import com.tanmay.buyit.dto.CartResponse;
+import com.tanmay.buyit.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
