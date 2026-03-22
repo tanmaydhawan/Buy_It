@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartResponse {
-    private List<CartItemResponse> cartItemResponseList;
-    private BigDecimal totalAmount;
+    private List<CartItemResponse> items;
+    private BigDecimal total;
 }
