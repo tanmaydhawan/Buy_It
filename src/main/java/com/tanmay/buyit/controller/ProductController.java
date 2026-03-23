@@ -19,7 +19,6 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<List<ProductResponse>> fetchAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }

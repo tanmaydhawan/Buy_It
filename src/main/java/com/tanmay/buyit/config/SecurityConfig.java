@@ -5,6 +5,7 @@ import com.tanmay.buyit.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -40,6 +41,7 @@ public class SecurityConfig{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
                                 .requestMatchers("/product/**").hasAuthority("BUYIT_ADMIN")
                                 .anyRequest().authenticated())
                 .userDetailsService(customUserDetailsService)
