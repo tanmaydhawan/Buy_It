@@ -3,6 +3,7 @@ package com.tanmay.buyit.service;
 import com.tanmay.buyit.dto.CategoryRequest;
 import com.tanmay.buyit.dto.CategoryResponse;
 import com.tanmay.buyit.entity.Category;
+import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,12 @@ public class CategoryServiceImpl implements CategoryService{
                 .stream()
                 .map(this::mapToDto)
                 .toList();
+    }
+
+    @Override
+    public void deleteCategoryById(Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found with id : " + id));
+        categoryRepository.delete(category);
     }
 
     private CategoryResponse mapToDto(Category savedCategory) {

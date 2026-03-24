@@ -29,4 +29,11 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest){
         return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
+    public ResponseEntity<?> deleteCategory (@PathVariable Long id){
+        categoryService.deleteCategoryById(id);
+        return ResponseEntity.ok("Category Deleted Successfully");
+    }
 }
