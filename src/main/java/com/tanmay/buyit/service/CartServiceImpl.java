@@ -7,6 +7,7 @@ import com.tanmay.buyit.entity.Cart;
 import com.tanmay.buyit.entity.CartItem;
 import com.tanmay.buyit.entity.Product;
 import com.tanmay.buyit.entity.User;
+import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CartRepository;
@@ -80,6 +81,38 @@ public class CartServiceImpl implements CartService{
                         .price(cartItem1.getProduct().getPrice())
                         .subtotal(cartItem1.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem1.getQuantity()))
                         ).build())
+                .toList();
+
+        return CartResponse.builder()
+                .items(cartItemResponseList)
+                .total(cart.getTotalPrice())
+                .build();
+    }
+
+    @Override
+    public CartResponse findUserCart() {
+
+        //Get logged-in user
+//
+//        3. Loop through cart items
+//        4. Convert each to CartItemResponse
+//        5. Return CartResponse
+        String userName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(userName).orElseThrow(()-> new UserNotFoundException(userName));
+
+        // Fetch cart
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new CartNotFoundForUserException(userName));
+
+        List<CartItemResponse> cartItemResponseList = cart.getCartItemList().stream()
+                .map(item -> CartItemResponse.builder()
+                        .productName(item.getProduct().getName())
+                        .quantity(item.getQuantity())
+                        .price(item.getProduct().getPrice())
+                        .subtotal(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                        .build())
                 .toList();
 
         return CartResponse.builder()

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CartService {
     CartResponse addToCart (CartRequest cartRequest);
+    CartResponse findUserCart();
 }

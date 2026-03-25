@@ -5,10 +5,7 @@ import com.tanmay.buyit.dto.CartResponse;
 import com.tanmay.buyit.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
@@ -21,4 +18,10 @@ public class CartController {
     public ResponseEntity<CartResponse> addToCart(@RequestBody CartRequest cartRequest){
         return ResponseEntity.ok(cartService.addToCart(cartRequest));
     }
+
+    @GetMapping("/items")
+    public ResponseEntity<CartResponse> getUserCart (){
+        return ResponseEntity.ok(cartService.findUserCart());
+    }
+
 }
