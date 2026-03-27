@@ -74,51 +74,25 @@ public class CartServiceImpl implements CartService{
 
         Cart savedCart = cartRepository.save(cart);
 
-        List<CartItemResponse> cartItemResponseList = savedCart.getCartItemList().stream()
-                .map(cartItem1 -> CartItemResponse.builder()
-                        .productName(cartItem1.getProduct().getName())
-                        .quantity(cartItem1.getQuantity())
-                        .price(cartItem1.getProduct().getPrice())
-                        .subtotal(cartItem1.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem1.getQuantity()))
-                        ).build())
-                .toList();
+        List<CartItemResponse> cartItemResponseList = mapCartItemsToDto(savedCart);
 
-        return CartResponse.builder()
-                .items(cartItemResponseList)
-                .total(cart.getTotalPrice())
-                .build();
+        return mapToCartResponse(cartItemResponseList, savedCart);
     }
 
     @Override
     public CartResponse findUserCart() {
 
-        //Get logged-in user
-//
-//        3. Loop through cart items
-//        4. Convert each to CartItemResponse
-//        5. Return CartResponse
         String userName = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
         User user = userRepository.findByEmail(userName).orElseThrow(()-> new UserNotFoundException(userName));
 
-        // Fetch cart
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new CartNotFoundForUserException(userName));
 
-        List<CartItemResponse> cartItemResponseList = cart.getCartItemList().stream()
-                .map(item -> CartItemResponse.builder()
-                        .productName(item.getProduct().getName())
-                        .quantity(item.getQuantity())
-                        .price(item.getProduct().getPrice())
-                        .subtotal(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                        .build())
-                .toList();
+        List<CartItemResponse> cartItemResponseList = mapCartItemsToDto(cart);
 
-        return CartResponse.builder()
-                .items(cartItemResponseList)
-                .total(cart.getTotalPrice())
-                .build();
+        return mapToCartResponse(cartItemResponseList, cart);
     }
 
     private Cart createNewCart(User user) {
@@ -126,6 +100,24 @@ public class CartServiceImpl implements CartService{
                 .user(user)
                 .cartItemList(new ArrayList<>())
                 .totalPrice(BigDecimal.ZERO)
+                .build();
+    }
+
+    private List<CartItemResponse> mapCartItemsToDto (Cart cart){
+        return cart.getCartItemList().stream()
+                .map(cartItem -> CartItemResponse.builder()
+                        .productName(cartItem.getProduct().getName())
+                        .quantity(cartItem.getQuantity())
+                        .price(cartItem.getProduct().getPrice())
+                        .subtotal(cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                        .build())
+                .toList();
+    }
+
+    private CartResponse mapToCartResponse (List<CartItemResponse> cartItemResponseList, Cart cart){
+        return CartResponse.builder()
+                .items(cartItemResponseList)
+                .total(cart.getTotalPrice())
                 .build();
     }
 }
