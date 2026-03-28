@@ -7,6 +7,7 @@ import com.tanmay.buyit.entity.Cart;
 import com.tanmay.buyit.entity.CartItem;
 import com.tanmay.buyit.entity.Product;
 import com.tanmay.buyit.entity.User;
+import com.tanmay.buyit.exception.CartItemNotFoundException;
 import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
@@ -93,6 +94,38 @@ public class CartServiceImpl implements CartService{
         List<CartItemResponse> cartItemResponseList = mapCartItemsToDto(cart);
 
         return mapToCartResponse(cartItemResponseList, cart);
+    }
+
+    @Override
+    public CartResponse deleteCartItem(Long productId) {
+
+        String userName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new UserNotFoundException(userName));
+
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new CartNotFoundForUserException(user.getEmail()));
+
+        boolean deleted = cart.getCartItemList().removeIf(item -> item.getProduct().getId().equals(productId));
+
+        if(!deleted){
+            throw new CartItemNotFoundException(productId);
+        }
+
+        BigDecimal newTotal = cart.getCartItemList().stream()
+                .map(cartItem -> cartItem.getProduct().getPrice()
+                        .multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        cart.setTotalPrice(newTotal);
+
+        Cart savedCart = cartRepository.save(cart);
+
+        List<CartItemResponse> cartItemResponses = mapCartItemsToDto(cart);
+
+        return mapToCartResponse(cartItemResponses, cart);
     }
 
     private Cart createNewCart(User user) {

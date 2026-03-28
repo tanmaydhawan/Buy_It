@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface CartService {
     CartResponse addToCart (CartRequest cartRequest);
     CartResponse findUserCart();
+    CartResponse deleteCartItem(Long productId);
 }
