@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +27,11 @@ public class Order {
     private OrderStatus orderStatus;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<OrderItem> items;
 
     @PrePersist
     public void prePersist(){
