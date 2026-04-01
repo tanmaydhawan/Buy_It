@@ -2,11 +2,14 @@ package com.tanmay.buyit.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class OrderItem {
 
     @Id
@@ -14,18 +17,15 @@ public class OrderItem {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     private Integer quantity;
 
     //snapshot price
     private BigDecimal price;
-
-    //price * quantity
-    private BigDecimal subTotal;
 }

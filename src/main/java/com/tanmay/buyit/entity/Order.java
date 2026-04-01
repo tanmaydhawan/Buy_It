@@ -3,13 +3,17 @@ package com.tanmay.buyit.entity;
 import com.tanmay.buyit.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "buyit_order")
 public class Order {
 
@@ -31,7 +35,7 @@ public class Order {
     @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<OrderItem> items;
+    private List<OrderItem> items = new ArrayList<>();
 
     @PrePersist
     public void prePersist(){
