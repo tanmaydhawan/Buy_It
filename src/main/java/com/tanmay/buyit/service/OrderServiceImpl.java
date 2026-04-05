@@ -3,7 +3,9 @@ package com.tanmay.buyit.service;
 import com.tanmay.buyit.dto.OrderResponse;
 import com.tanmay.buyit.entity.Cart;
 import com.tanmay.buyit.entity.CartItem;
+import com.tanmay.buyit.entity.Order;
 import com.tanmay.buyit.entity.User;
+import com.tanmay.buyit.enums.OrderStatus;
 import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
@@ -13,6 +15,8 @@ import com.tanmay.buyit.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +64,21 @@ public class OrderServiceImpl implements OrderService{
         }
 
 //  6. Calculate final price
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for(CartItem ci : cart.getCartItemList()){
+            BigDecimal price = ci.getProduct().getPrice();
+            Integer quantity = ci.getQuantity();
+            BigDecimal itemTotal = price.multiply(BigDecimal.valueOf(quantity));
+            totalAmount = totalAmount.add(itemTotal);
+        }
+
 //  7. Create order
+        Order order = Order.builder()
+                .user(user)
+                .orderStatus(OrderStatus.CREATED)
+                .totalAmount(totalAmount)
+                .build();
+
 //  8. Create order items
 //  9. Reduce product stock
 //  10. Clear cart
