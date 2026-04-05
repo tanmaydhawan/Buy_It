@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService{
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new CartNotFoundForUserException(userId));
 
 //  3. Validate cart is NOT empty (Add specific exception)
-        if(cart.getCartItemList() != null && !cart.getCartItemList().isEmpty()){
+        if(cart.getCartItemList() == null || cart.getCartItemList().isEmpty()){
             throw new IllegalStateException("Cart is Empty, cannot place order!");
         }
 
