@@ -50,6 +50,15 @@ public class OrderServiceImpl implements OrderService{
         }
 
 //  5. Validate stock availability
+        for(CartItem ci : cart.getCartItemList()){
+            Integer stock = ci.getProduct().getStock();
+            Integer quantity = ci.getQuantity();
+
+            if (stock== null || quantity == null || stock < quantity){
+                throw new IllegalStateException("The required quantity cannot be fulfilled");
+            }
+        }
+
 //  6. Calculate final price
 //  7. Create order
 //  8. Create order items
