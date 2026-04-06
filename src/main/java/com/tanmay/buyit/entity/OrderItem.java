@@ -1,6 +1,7 @@
 package com.tanmay.buyit.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
+@Builder
 public class OrderItem {
 
     @Id

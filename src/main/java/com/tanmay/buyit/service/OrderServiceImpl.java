@@ -1,10 +1,7 @@
 package com.tanmay.buyit.service;
 
 import com.tanmay.buyit.dto.OrderResponse;
-import com.tanmay.buyit.entity.Cart;
-import com.tanmay.buyit.entity.CartItem;
-import com.tanmay.buyit.entity.Order;
-import com.tanmay.buyit.entity.User;
+import com.tanmay.buyit.entity.*;
 import com.tanmay.buyit.enums.OrderStatus;
 import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
@@ -12,11 +9,14 @@ import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CartRepository;
 import com.tanmay.buyit.repo.ProductRepository;
 import com.tanmay.buyit.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,8 @@ public class OrderServiceImpl implements OrderService{
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+
+    @Transactional
     @Override
     public OrderResponse placeOrderForUser() {
 
@@ -80,7 +82,25 @@ public class OrderServiceImpl implements OrderService{
                 .build();
 
 //  8. Create order items
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for(CartItem ci : cart.getCartItemList()){
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order)
+                    .product(ci.getProduct())
+                    .price(ci.getProduct().getPrice())
+                    .quantity(ci.getQuantity())
+                    .build();
+
+            orderItemList.add(orderItem);
+        }
+        order.setItems(orderItemList);
+
 //  9. Reduce product stock
+        for(CartItem ci : cart.getCartItemList()){
+            Product product = ci.getProduct();
+            Integer newStock = product.getStock() - ci.getQuantity();
+            product.setStock(newStock);
+        }
 //  10. Clear cart
 //  11. Return order response
         return null;
