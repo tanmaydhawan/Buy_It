@@ -102,6 +102,9 @@ public class OrderServiceImpl implements OrderService{
             product.setStock(newStock);
         }
 //  10. Clear cart
+        cart.getCartItemList().clear();
+        cartRepository.save(cart);
+
 //  11. Return order response
         return null;
     }
