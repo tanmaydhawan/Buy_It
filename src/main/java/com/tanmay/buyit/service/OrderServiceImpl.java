@@ -8,6 +8,7 @@ import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CartRepository;
+import com.tanmay.buyit.repo.OrderRepository;
 import com.tanmay.buyit.repo.ProductRepository;
 import com.tanmay.buyit.repo.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService{
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
     @Transactional
     @Override
@@ -95,6 +97,8 @@ public class OrderServiceImpl implements OrderService{
             orderItemList.add(orderItem);
         }
         order.setItems(orderItemList);
+        orderRepository.save(order);
+
 
 //  9. Reduce product stock
         for(CartItem ci : cart.getCartItemList()){
