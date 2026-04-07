@@ -1,5 +1,6 @@
 package com.tanmay.buyit.service;
 
+import com.tanmay.buyit.dto.OrderItemResponse;
 import com.tanmay.buyit.dto.OrderResponse;
 import com.tanmay.buyit.entity.*;
 import com.tanmay.buyit.enums.OrderStatus;
@@ -106,6 +107,21 @@ public class OrderServiceImpl implements OrderService{
         cartRepository.save(cart);
 
 //  11. Return order response
-        return null;
+        List<OrderItemResponse> orderItemResponseList = new ArrayList<>();
+        for(OrderItem oi : order.getItems()){
+            OrderItemResponse orderItem = OrderItemResponse.builder()
+                    .productName(oi.getProduct().getName())
+                    .quantity(oi.getQuantity())
+                    .price(oi.getPrice())
+                    .subTotal(oi.getPrice().multiply(BigDecimal.valueOf(oi.getQuantity())))
+                    .build();
+            orderItemResponseList.add(orderItem);
+        }
+
+        return OrderResponse.builder()
+                .items(orderItemResponseList)
+                .orderStatus(order.getOrderStatus())
+                .totalAmount(totalAmount)
+                .build();
     }
 }
