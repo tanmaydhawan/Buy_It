@@ -4,6 +4,7 @@ import com.tanmay.buyit.dto.OrderItemResponse;
 import com.tanmay.buyit.dto.OrderResponse;
 import com.tanmay.buyit.entity.*;
 import com.tanmay.buyit.enums.OrderStatus;
+import com.tanmay.buyit.exception.CartEmptyException;
 import com.tanmay.buyit.exception.CartNotFoundForUserException;
 import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
@@ -45,7 +46,7 @@ public class OrderServiceImpl implements OrderService{
 
 //  3. Validate cart is NOT empty (Add specific exception)
         if(cart.getCartItemList() == null || cart.getCartItemList().isEmpty()){
-            throw new IllegalStateException("Cart is Empty, cannot place order!");
+            throw new CartEmptyException();
         }
 
 //  4. Validate products still exist
