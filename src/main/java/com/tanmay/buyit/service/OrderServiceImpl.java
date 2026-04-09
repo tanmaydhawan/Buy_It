@@ -124,8 +124,10 @@ public class OrderServiceImpl implements OrderService{
         }
 
         return OrderResponse.builder()
+                .orderId(order.getId())
                 .items(orderItemResponseList)
                 .orderStatus(order.getOrderStatus())
+                .createdAt(order.getCreatedAt())
                 .totalAmount(totalAmount)
                 .build();
     }
