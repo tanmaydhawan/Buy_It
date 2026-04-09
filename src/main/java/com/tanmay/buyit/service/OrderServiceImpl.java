@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService{
 //  7. Create order
         Order order = Order.builder()
                 .user(user)
-                .orderStatus(OrderStatus.CREATED)
+                .orderStatus(OrderStatus.PLACED)
                 .totalAmount(totalAmount)
                 .build();
 
