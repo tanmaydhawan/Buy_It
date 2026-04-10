@@ -109,6 +109,7 @@ public class OrderServiceImpl implements OrderService{
         }
 //  10. Clear cart
         cart.getCartItemList().clear();
+        cart.setTotalPrice(BigDecimal.ZERO);
         cartRepository.save(cart);
 
 //  11. Return order response
