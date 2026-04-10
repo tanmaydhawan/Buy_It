@@ -78,6 +78,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CartEmptyException.class)
+    public ResponseEntity<ErrorResponse> handleEmptyCartException(CartEmptyException ex, HttpServletRequest request){
+        ErrorResponse error = ErrorResponse.builder()
+                .error("Cart is empty!")
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericExceptions (Exception ex , HttpServletRequest request){
 
