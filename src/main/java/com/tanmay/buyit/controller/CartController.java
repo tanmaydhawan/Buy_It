@@ -31,6 +31,7 @@ public class CartController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteCartForUser(){
+        cartService.deleteUserCart();
         return ResponseEntity.noContent().build();
     }
 }

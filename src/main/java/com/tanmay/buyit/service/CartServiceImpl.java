@@ -128,6 +128,19 @@ public class CartServiceImpl implements CartService{
         return mapToCartResponse(cartItemResponses, cart);
     }
 
+    @Override
+    public void deleteUserCart() {
+        String userName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(userName).orElseThrow(() -> new UserNotFoundException(userName));
+
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new CartNotFoundForUserException(userName));
+
+        cartRepository.delete(cart);
+    }
+
     private Cart createNewCart(User user) {
         return Cart.builder()
                 .user(user)
