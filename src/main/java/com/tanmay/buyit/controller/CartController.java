@@ -29,5 +29,8 @@ public class CartController {
         return ResponseEntity.ok(cartService.deleteCartItem(productId));
     }
 
-    //Implement Delete Cart for User 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteCartForUser(){
+        return ResponseEntity.noContent().build();
+    }
 }
