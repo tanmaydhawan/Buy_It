@@ -104,4 +104,18 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException (UserNotFoundException ex, HttpServletRequest request){
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .path(request.getContextPath())
+                .message(ex.getMessage())
+                .error("The requested user doesn't exist!")
+                .status(HttpStatus.NOT_FOUND.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }
