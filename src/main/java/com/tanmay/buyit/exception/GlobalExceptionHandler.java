@@ -67,12 +67,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleDefaultRoleNotFoundException(UserAlreadyExistsException ex, HttpServletRequest request){
+    public ResponseEntity<ErrorResponse> handleDefaultRoleNotFoundException(RoleNotFoundException ex, HttpServletRequest request){
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .error("Duplicate User Exception!")
                 .message(ex.getMessage())
-                .status(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.NOT_FOUND.value())
                 .path(request.getRequestURI())
                 .timestamp(LocalDateTime.now())
                 .build();
@@ -154,6 +154,7 @@ public class GlobalExceptionHandler {
                 .message("This product isn't in stock")
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
+                .status(HttpStatus.NOT_FOUND.value())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
