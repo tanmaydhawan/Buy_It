@@ -172,4 +172,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CartNotFoundForUserException.class)
+    public ResponseEntity<ErrorResponse> handleCartNotFoundForUserException(CartNotFoundForUserException ex, HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error(ex.getMessage())
+                .message("This cart isn't found for the user!")
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .status(HttpStatus.NOT_FOUND.value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }
