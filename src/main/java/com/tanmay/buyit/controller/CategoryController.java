@@ -3,6 +3,7 @@ package com.tanmay.buyit.controller;
 import com.tanmay.buyit.dto.CategoryRequest;
 import com.tanmay.buyit.dto.CategoryResponse;
 import com.tanmay.buyit.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class CategoryController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest categoryRequest){
         return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
     }
 
