@@ -3,6 +3,7 @@ package com.tanmay.buyit.service;
 import com.tanmay.buyit.dto.CategoryRequest;
 import com.tanmay.buyit.dto.CategoryResponse;
 import com.tanmay.buyit.entity.Category;
+import com.tanmay.buyit.exception.CategoryNotFoundException;
 import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void deleteCategoryById(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found with id : " + id));
+        Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         categoryRepository.delete(category);
     }
 
