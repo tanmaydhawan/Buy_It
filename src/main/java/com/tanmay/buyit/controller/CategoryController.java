@@ -28,7 +28,7 @@ public class CategoryController {
     @PostMapping
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest categoryRequest){
-        return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
