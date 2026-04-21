@@ -3,6 +3,7 @@ package com.tanmay.buyit.controller;
 import com.tanmay.buyit.dto.CartRequest;
 import com.tanmay.buyit.dto.CartResponse;
 import com.tanmay.buyit.service.CartService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/items")
-    public ResponseEntity<CartResponse> addToCart(@RequestBody CartRequest cartRequest){
+    public ResponseEntity<CartResponse> addToCart(@Valid @RequestBody CartRequest cartRequest){
         return ResponseEntity.ok(cartService.addToCart(cartRequest));
     }
 
