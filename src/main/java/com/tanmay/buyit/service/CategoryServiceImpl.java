@@ -4,7 +4,6 @@ import com.tanmay.buyit.dto.CategoryRequest;
 import com.tanmay.buyit.dto.CategoryResponse;
 import com.tanmay.buyit.entity.Category;
 import com.tanmay.buyit.exception.CategoryNotFoundException;
-import com.tanmay.buyit.exception.UserNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
