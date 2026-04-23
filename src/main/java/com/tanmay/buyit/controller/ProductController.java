@@ -27,12 +27,12 @@ public class ProductController {
     @PostMapping
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<ProductResponse> createProducts(@Valid @RequestBody ProductRequest productRequest){
-        return new ResponseEntity<>(productService.createProduct(productRequest), HttpStatus.OK);
+        return new ResponseEntity<>(productService.createProduct(productRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
-    public ResponseEntity<ProductResponse> editExistingProduct (@Valid @PathVariable Long id, @RequestBody ProductRequest productRequest){
+    public ResponseEntity<ProductResponse> editExistingProduct (@PathVariable Long id, @Valid @RequestBody ProductRequest productRequest){
         return new ResponseEntity<>(productService.editProduct(id, productRequest), HttpStatus.ACCEPTED);
     }
 
