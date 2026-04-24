@@ -16,6 +16,19 @@ spring:
   jackson:
     serialization:
       indent_output: true
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 6000ms
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000 # 1 hour in milliseconds
 server:
   port: 8080
 
