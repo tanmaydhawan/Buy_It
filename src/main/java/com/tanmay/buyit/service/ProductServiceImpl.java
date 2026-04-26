@@ -10,6 +10,7 @@ import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import com.tanmay.buyit.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable("products")  // Cache name = "products"
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()
