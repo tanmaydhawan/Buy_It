@@ -100,6 +100,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(value = "products_by_category", key = "#categoryId")
     public List<ProductResponse> getProductByCategoryId(Long categoryId) {
         return productRepository.findByCategoryId(categoryId)
                 .stream()
