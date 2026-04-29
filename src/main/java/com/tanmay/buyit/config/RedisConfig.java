@@ -20,13 +20,11 @@ public class RedisConfig {
         @Bean
         public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
-            Jackson2JsonRedisSerializer<Object> serializer =
-                    new Jackson2JsonRedisSerializer<>(Object.class);
-
             ObjectMapper mapper = new ObjectMapper();
             mapper.findAndRegisterModules(); // handles Java time etc.
 
-            serializer.setObjectMapper(mapper);
+            Jackson2JsonRedisSerializer<Object> serializer =
+                    new Jackson2JsonRedisSerializer<>(mapper, Object.class);
 
             RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                     .serializeKeysWith(
