@@ -10,6 +10,7 @@ import com.tanmay.buyit.exception.ProductNotFoundException;
 import com.tanmay.buyit.repo.CategoryRepository;
 import com.tanmay.buyit.repo.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService{
     private final CategoryRepository categoryRepository;
 
     @Override
+    @CacheEvict(value = "products", key = "'all'")
     public ProductResponse createProduct(ProductRequest productRequest) {
 
         Category category = categoryRepository.findById(productRequest.getCategoryId())
