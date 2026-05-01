@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService{
     private final CategoryRepository categoryRepository;
 
     @Override
-    @CacheEvict(value = "products", key = "'all'")
+    @CacheEvict(value = {"products", "products_by_category"}, allEntries = true)
     public ProductResponse createProduct(ProductRequest productRequest) {
 
         Category category = categoryRepository.findById(productRequest.getCategoryId())
@@ -48,12 +48,14 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @CacheEvict(value = {"products", "products_by_category"}, allEntries = true)
     public void deleteById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productRepository.delete(product);
     }
 
     @Override
+    @CacheEvict(value = {"products", "products_by_category"}, allEntries = true)
     public ProductResponse editProduct(Long id, ProductRequest productRequest) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         Category category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
