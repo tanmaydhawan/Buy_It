@@ -72,8 +72,18 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(value = "products_search", key = "#name")
     public List<ProductResponse> findProductsByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name).stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    @Override
+    @Cacheable(value = "products_by_category", key = "#categoryId")
+    public List<ProductResponse> getProductByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId)
+                .stream()
                 .map(this::mapToDto)
                 .toList();
     }
@@ -101,14 +111,5 @@ public class ProductServiceImpl implements ProductService{
                 .price(productRequest.getPrice())
                 .stock(productRequest.getStock())
                 .build();
-    }
-
-    @Override
-    @Cacheable(value = "products_by_category", key = "#categoryId")
-    public List<ProductResponse> getProductByCategoryId(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId)
-                .stream()
-                .map(this::mapToDto)
-                .toList();
     }
 }
