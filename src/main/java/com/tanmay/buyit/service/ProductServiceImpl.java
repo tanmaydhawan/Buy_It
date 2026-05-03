@@ -88,6 +88,12 @@ public class ProductServiceImpl implements ProductService{
                 .toList();
     }
 
+    @Override
+    public ProductResponse findProductByProductId(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        return mapToDto(product);
+    }
+
     private ProductResponse mapToDto(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
