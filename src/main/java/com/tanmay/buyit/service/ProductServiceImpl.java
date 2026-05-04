@@ -89,6 +89,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(value = "product_by_id", key = "#id")
     public ProductResponse findProductByProductId(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         return mapToDto(product);
