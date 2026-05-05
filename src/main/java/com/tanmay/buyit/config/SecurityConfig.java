@@ -43,6 +43,10 @@ public class SecurityConfig{
                         auth.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
                                 .requestMatchers("/product/**").hasAuthority("BUYIT_ADMIN")
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
                                 .anyRequest().authenticated())
                 .userDetailsService(customUserDetailsService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
