@@ -3,6 +3,7 @@ package com.tanmay.buyit.controller;
 import com.tanmay.buyit.dto.ProductRequest;
 import com.tanmay.buyit.dto.ProductResponse;
 import com.tanmay.buyit.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @AllArgsConstructor
+@Tag(name = "Product APIs", description = "Operations related to products")
 public class ProductController {
 
     private final ProductService productService;
