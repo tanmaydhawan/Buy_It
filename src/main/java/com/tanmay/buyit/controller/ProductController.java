@@ -29,18 +29,21 @@ public class ProductController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a Product")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<ProductResponse> createProducts(@Valid @RequestBody ProductRequest productRequest){
         return new ResponseEntity<>(productService.createProduct(productRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Edit existing Product")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<ProductResponse> editExistingProduct (@PathVariable Long id, @Valid @RequestBody ProductRequest productRequest){
         return new ResponseEntity<>(productService.editProduct(id, productRequest), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a Product")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         productService.deleteById(id);
@@ -48,17 +51,20 @@ public class ProductController {
     }
 
     @GetMapping("/search")
+    @Operation(summary = "Search products by Name")
     @PreAuthorize("hasAuthority('BUYIT_ADMIN')")
     public ResponseEntity<List<ProductResponse>> searchProductsByName (@RequestParam String name){
         return new ResponseEntity<>(productService.findProductsByName(name), HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}")
+    @Operation(summary = "Get Products by Category")
     public ResponseEntity<List<ProductResponse>> getProductsByCategory (@PathVariable Long id){
         return new ResponseEntity<>(productService.getProductByCategoryId(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get Product by Id")
     public ResponseEntity<ProductResponse> getProductsById(@PathVariable Long id){
         return new ResponseEntity<>(productService.findProductByProductId(id), HttpStatus.OK);
     }
