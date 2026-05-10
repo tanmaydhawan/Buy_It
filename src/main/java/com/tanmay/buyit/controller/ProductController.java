@@ -3,6 +3,7 @@ package com.tanmay.buyit.controller;
 import com.tanmay.buyit.dto.ProductRequest;
 import com.tanmay.buyit.dto.ProductResponse;
 import com.tanmay.buyit.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
+    @Operation(summary = "Get all Products")
     public ResponseEntity<List<ProductResponse>> fetchAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
