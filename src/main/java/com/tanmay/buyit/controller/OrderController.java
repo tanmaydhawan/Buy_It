@@ -2,6 +2,7 @@ package com.tanmay.buyit.controller;
 
 import com.tanmay.buyit.dto.OrderResponse;
 import com.tanmay.buyit.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/place")
+    @Operation(summary = "Placing order from cart")
     public ResponseEntity<OrderResponse> placeOrder (){
         return new ResponseEntity<OrderResponse>(orderService.placeOrderForUser(), HttpStatus.OK);
     }
