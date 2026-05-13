@@ -8,6 +8,8 @@ import com.tanmay.buyit.dto.RegisterUserRequest;
 import com.tanmay.buyit.dto.RegisterUserResponse;
 import com.tanmay.buyit.security.JwtService;
 import com.tanmay.buyit.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@Tag(name = "Auth APIs", description = "Operations related to Authentication and Authorization")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -39,6 +42,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @LogExecution
+    @Operation(summary = "Login an existing user")
     public ResponseEntity<LoginResponse> login (@Valid @RequestBody LoginRequest request){
 
         Authentication authenticate = authenticationManager.authenticate(
@@ -51,6 +55,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     @LogExecution
+    @Operation(summary = "Creating a new account")
     public ResponseEntity<RegisterUserResponse> signUp (@Valid @RequestBody RegisterUserRequest registerUserRequest){
         RegisterUserResponse registerUserResponse = userService.userSignup(registerUserRequest);
 
